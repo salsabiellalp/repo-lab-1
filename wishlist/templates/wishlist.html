@@ -1,26 +1,60 @@
+
+
 {% extends 'base.html' %}
 
 {% block content %}
-<h5>Nama: </h5>
-<p>Bella</p>
 
-<table>
-    <tr>
-    <th>Nama Barang</th>
-    <th>Harga Barang</th>
-    <th>Deskripsi</th>
-    </tr>
-    {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
-{% for barang in list_barang %}
-    <tr>
-        <th>{{barang.nama_barang}}</th>
-        <th>{{barang.harga_barang}}</th>
-        <th>{{barang.deskripsi}}</th>
-    </tr>
-{% endfor %}
-</table>
-<h5>Sesi terakhir login: {{ last_login }}</h5>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    .button {
+      background-color: #b3270f; 
+      border: none;
+      color: white;
+      padding: 7px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 1px 1px;
+      cursor: pointer;
+    }
+    
 
-<button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+    .button4 {border-radius: 12px;}
+    
+    </style>
+    </head>
 
+<nav class="navbar navbar-dark bg-dark">
+<div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">{{nama}}</span>
+    <div class="rounded-4">
+    <button type="button" class="button button4 "><a href="{% url 'wishlist:logout' %}" class="text-white">Logout</a></button>
+    </div>
+</div>
+</nav>
+
+
+<div class="m-5">
+    <table class="table table-bordered" >
+        <tr class="table-primary">
+        <th>Nama Barang</th>
+        <th>Harga Barang</th>
+        <th>Deskripsi</th>
+        </tr>
+        {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
+    {% for barang in list_barang %}
+        <tr>
+            <th>{{barang.nama_barang}}</th>
+            <th>{{barang.harga_barang}}</th>
+            <th>{{barang.deskripsi}}</th>
+        </tr>
+    {% endfor %}
+    </table>
+    <div class="m-5">
+        <p class="text-center fs-6" >Sesi terakhir login: {{ last_login }}</p>
+    </div>
+    
+</div>
 {% endblock content %}
