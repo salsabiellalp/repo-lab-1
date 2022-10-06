@@ -1,0 +1,80 @@
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    .button {
+      background-color: #b3270f; 
+      border: none;
+      color: white;
+      padding: 7px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 1px 1px;
+      cursor: pointer;
+    }
+    
+
+    .button4 {border-radius: 12px;}
+    
+    </style>
+    </head>
+
+<nav class="navbar navbar-dark bg-dark">
+<div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">{{nama}}</span>
+    <div class="rounded-4">
+    <button type="button" class="button button4 "><a href="{% url 'wishlist:logout' %}" class="text-white">Logout</a></button>
+    </div>
+</div>
+</nav>
+
+
+<div class="m-5">
+    <table class="table table-bordered" >
+        <tr class="table-primary">
+        <th>Nama Barang</th>
+        <th>Harga Barang</th>
+        <th>Deskripsi</th>
+        </tr>
+        <script>
+            $(document).ready(function () {
+        
+                // FETCHING DATA FROM JSON FILE
+                $.getJSON( "{% url 'wishlist:show_json' %}", function (data) {
+                    var barang = '';
+        
+                    // ITERATING THROUGH OBJECTS
+                    $.each(data, function (key, value) {
+        
+                        //CONSTRUCTION OF ROWS HAVING
+                        // DATA FROM JSON OBJECT
+                        barang += '<tr>';
+    
+                        barang += '<td>' + value.fields.nama_barang + '</td>';
+        
+                        barang += '<td>' + value.fields.harga_barang + '</td>';
+        
+                        barang += '<td>' + value.fields.deskripsi + '</td>';
+        
+                        barang += '</tr>';
+                    });
+                      
+                    //INSERTING ROWS INTO TABLE 
+                    $('#table').append(barang);
+                });
+            });
+        </script>
+    </table>
+    <div class="m-5">
+        <p class="text-center fs-6" >Sesi terakhir login: {{ last_login }}</p>
+    </div>
+    
+</div>
+{% endblock content %}
