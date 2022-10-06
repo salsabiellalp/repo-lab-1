@@ -19,13 +19,13 @@
       margin: 1px 1px;
       cursor: pointer;
     }
-    
 
     .button4 {border-radius: 12px;}
     
     </style>
-    </head>
+</head>
 
+<!-- navbar -->
 <nav class="navbar navbar-dark bg-dark">
 <div class="container-fluid">
     <span class="navbar-brand mb-0 h1">{{nama}}</span>
@@ -35,46 +35,87 @@
 </div>
 </nav>
 
-
+<!-- table header -->
 <div class="m-5">
-    <table class="table table-bordered" >
+    <table class="table table-bordered content" >
         <tr class="table-primary">
-        <th>Nama Barang</th>
-        <th>Harga Barang</th>
-        <th>Deskripsi</th>
+            <th>Nama Barang</th>
+            <th>Harga Barang</th>
+            <th>Deskripsi</th>
         </tr>
-        <script>
-            $(document).ready(function () {
-        
-                // FETCHING DATA FROM JSON FILE
-                $.getJSON( "{% url 'wishlist:show_json' %}", function (data) {
-                    var barang = '';
-        
-                    // ITERATING THROUGH OBJECTS
-                    $.each(data, function (key, value) {
-        
-                        //CONSTRUCTION OF ROWS HAVING
-                        // DATA FROM JSON OBJECT
-                        barang += '<tr>';
-    
-                        barang += '<td>' + value.fields.nama_barang + '</td>';
-        
-                        barang += '<td>' + value.fields.harga_barang + '</td>';
-        
-                        barang += '<td>' + value.fields.deskripsi + '</td>';
-        
-                        barang += '</tr>';
-                    });
-                      
-                    //INSERTING ROWS INTO TABLE 
-                    $('#table').append(barang);
-                });
-            });
-        </script>
     </table>
+
     <div class="m-5">
         <p class="text-center fs-6" >Sesi terakhir login: {{ last_login }}</p>
-    </div>
-    
+    </div>  
 </div>
+
+<!-- form new wishlist -->
+<form method="POST" action="">
+    {% csrf_token %}
+    <div class="card-body">
+        <div class="m-2" style="display:flex; flex-direction: column; text-align: left;">
+            <label for="judul"> Nama Barang: </label>
+            <input id="nama" type="text" name="nama" placeholder="Nama barang " required>
+        </div>
+        <div class="m-2" style="display:flex; flex-direction: column; text-align: left;">
+            <label for="deskripsi"> Harga Barang: </label>
+            <input id="harga" type="text" name="harga" placeholder="Harga barang" required>
+        </div>
+        <div class="m-2" style="display:flex; flex-direction: column; text-align: left;">
+            <label for="deskripsi">Deskripsi: </label>
+            <input id="deskripsi" type="text" name="deskripsi" placeholder="Deskripsi" required>
+        </div>
+    </div>
+
+    <center><input class="button button4" type="submit" value="Tambah barang" style="background-color: #1c54cc;"></center>
+</form>
+
+<!-- ajax script -->
+<script>
+    $(document).ready(function () {
+
+        // FETCHING DATA FROM JSON FILE
+        $.getJSON( "{% url 'wishlist:show_json' %}", function (data) {
+            var barang = '';
+
+            // ITERATING THROUGH OBJECTS
+            $.each(data, function (key, value) {
+
+                //CONSTRUCTION OF ROWS HAVING
+                // DATA FROM JSON OBJECT
+                barang += '<tr>';
+
+                barang += '<td>' + value.fields.nama_barang + '</td>';
+
+                barang += '<td>' + value.fields.harga_barang + '</td>';
+
+                barang += '<td>' + value.fields.deskripsi + '</td>';
+
+                barang += '</tr>';
+            });
+              
+            //INSERTING ROWS INTO TABLE 
+            $('table').append(barang);
+        });
+    });
+</script>
+
+
+ <script>
+    $(document).ready(function () {
+        $(".button").click(function(){
+            let nama = $("#nama").val();
+            let harga = $("#harga").val();
+            let deskripsi = $("#deskripsi").val();
+            let csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            $.post('/wishlist/ajax/submit/', {
+                nama_barang : nama,
+                harga_barang : harga,
+                deskripsi : deskripsi,
+                csrfmiddlewaretoken: csrf_token,
+            })
+        })
+    })
+ </script>
 {% endblock content %}

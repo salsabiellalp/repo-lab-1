@@ -84,3 +84,12 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('wishlist:login'))
     response.delete_cookie('last_login')
     return response
+
+def submit_barang(request):
+    if request.method == 'POST':
+        nama = request.POST.get("nama_barang")
+        harga = request.POST.get("harga_barang")
+        deskripsi = request.POST.get("deskripsi")
+        barang = BarangWishlist(nama_barang=nama, harga_barang=harga, deskripsi=deskripsi)                                    
+        barang.save()
+    return redirect('wishlist:show_ajax')
